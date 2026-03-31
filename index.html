@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -6,7 +6,7 @@
     <meta
       id="meta-desc"
       name="description"
-      content="Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版与 JWT 专业版。"
+      content="Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版限 5 个账号，专业版 ¥5 终身可无限保存。"
     />
     <title>Account Switch（Cookie 配置）</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,19 +41,22 @@
         margin: 0;
         min-height: 100vh;
         font-family:
-          "DM Sans",
-          "PingFang SC",
-          "Hiragino Sans GB",
-          "Microsoft YaHei",
-          "Noto Sans SC",
-          system-ui,
-          sans-serif;
+          "DM Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+          "Noto Sans SC", system-ui, sans-serif;
         background: var(--bg);
         color: var(--text);
         padding: 2.5rem 1.25rem 3rem;
         background-image:
-          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232, 165, 75, 0.15), transparent),
-          radial-gradient(ellipse 60% 40% at 100% 100%, rgba(232, 165, 75, 0.06), transparent);
+          radial-gradient(
+            ellipse 80% 50% at 50% -20%,
+            rgba(232, 165, 75, 0.15),
+            transparent
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 100% 100%,
+            rgba(232, 165, 75, 0.06),
+            transparent
+          );
       }
 
       main {
@@ -78,7 +81,10 @@
         background: transparent;
         color: var(--muted);
         cursor: pointer;
-        transition: color 0.15s, background 0.15s, border-color 0.15s;
+        transition:
+          color 0.15s,
+          background 0.15s,
+          border-color 0.15s;
       }
 
       .lang-switch [data-set-lang]:first-of-type {
@@ -215,39 +221,44 @@
         border-radius: 0.25rem;
       }
 
-      .footnote {
-        margin-top: 2rem;
-        padding-top: 1.25rem;
-        border-top: 1px solid var(--border);
-        font-size: 0.8125rem;
-        line-height: 1.65;
-        color: var(--muted);
-      }
-
-      .footnote a {
-        color: var(--accent);
-        text-decoration: none;
-      }
-
-      .footnote a:hover {
-        text-decoration: underline;
-      }
     </style>
   </head>
   <body>
     <main>
       <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-set-lang="zh" aria-pressed="true">中文</button>
-        <button type="button" data-set-lang="en" aria-pressed="false">English</button>
+        <button type="button" data-set-lang="zh" aria-pressed="true">
+          中文
+        </button>
+        <button type="button" data-set-lang="en" aria-pressed="false">
+          English
+        </button>
       </div>
 
       <div class="i18n-block" data-lang="zh">
         <header class="hero">
           <div class="badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
-              <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
-              <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
+              <circle
+                cx="9"
+                cy="10"
+                r="1.2"
+                fill="currentColor"
+                stroke="none"
+              />
+              <circle
+                cx="15"
+                cy="14"
+                r="1.2"
+                fill="currentColor"
+                stroke="none"
+              />
             </svg>
             Chromium · Manifest V3
           </div>
@@ -256,92 +267,122 @@
         </header>
 
         <p class="lead">
-          基于 Chromium 的浏览器扩展：按站点<strong>保存 Cookie 快照</strong>，支持自定义<strong>名称</strong>与<strong>分组</strong>。切换账号时会清除当前 URL 作用域下的 Cookie，并<strong>恢复</strong>已保存的集合。数据默认<strong>仅保存在本机</strong>。
+          基于 Chromium 的浏览器扩展：按站点<strong>保存 Cookie 快照</strong
+          >，支持自定义<strong>名称</strong>与<strong>分组</strong>。切换账号时会清除当前
+          URL 作用域下的
+          Cookie，并<strong>恢复</strong>已保存的集合。数据默认<strong>仅保存在本机</strong>。
         </p>
 
         <h2>核心能力</h2>
         <ul>
           <li>按站点管理多个账号（profile），分组与命名清晰</li>
           <li>切换时自动清理作用域内 Cookie 并写入快照，避免串号</li>
-          <li>界面语言跟随浏览器；支持英文与简体中文等 i18n</li>
+          <li>界面语言跟随浏览器；支持英文与简体中文等</li>
         </ul>
 
         <div class="card">
           <p>
-            <strong style="color: var(--text)">免费版</strong>限制可保存的账号数量（可在源码中配置
-            <code>FREE_MAX_PROFILES</code>，默认 5）。
+            <strong style="color: var(--text)">免费版</strong
+            >限制可保存的账号数量（5）。
           </p>
           <p>
-            <strong style="color: var(--text)">专业版</strong>通过服务端签发的 <strong style="color: var(--text)">JWT 许可证</strong>解锁（扩展内仅嵌入<strong>公钥</strong>校验；私钥留在服务器，常见流程：官网 Stripe 收款 → Webhook 签发 JWT）。
+            <strong style="color: var(--text)">专业版</strong>5元终身订阅
+            可无限保存账号
           </p>
         </div>
 
         <h2>权限与隐私</h2>
         <ul>
-          <li><strong>cookies</strong>、<strong>storage</strong>、<strong>tabs</strong>：读写 Cookie、本地存储与标签页上下文</li>
+          <li>
+            <strong>cookies</strong
+            >、<strong>storage</strong>、<strong>tabs</strong>：读写
+            Cookie、本地存储与标签页上下文
+          </li>
           <li>按需申请站点或全网访问权限，仅在保存/切换时使用</li>
         </ul>
-
-        <p class="footnote">
-          构建：<code>npm install</code> 与 <code>npm run build</code>，在 <code>chrome://extensions</code> 中加载
-          <code>dist/</code>。完整说明、本地 JWT 测试与隐私政策见仓库文档（如 <code>docs/PRIVACY.md</code>）。
-        </p>
       </div>
 
       <div class="i18n-block" data-lang="en" hidden>
         <header class="hero">
           <div class="badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
-              <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
-              <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
+              <circle
+                cx="9"
+                cy="10"
+                r="1.2"
+                fill="currentColor"
+                stroke="none"
+              />
+              <circle
+                cx="15"
+                cy="14"
+                r="1.2"
+                fill="currentColor"
+                stroke="none"
+              />
             </svg>
             Chromium · Manifest V3
           </div>
           <h1>Account Switch</h1>
-          <p class="subtitle">Cookie profiles · Snapshots &amp; one-click switching</p>
+          <p class="subtitle">
+            Cookie profiles · Snapshots &amp; one-click switching
+          </p>
         </header>
 
         <p class="lead">
-          A Chromium extension that <strong>saves Cookie snapshots</strong> per site, with custom <strong>names</strong> and
-          <strong>groups</strong>. When you switch accounts, it clears cookies for the current URL scope and
-          <strong>restores</strong> the saved set. Data stays <strong>on your device</strong> by default.
+          A Chromium extension that <strong>saves Cookie snapshots</strong> per
+          site, with custom <strong>names</strong> and <strong>groups</strong>.
+          When you switch accounts, it clears cookies for the current URL scope
+          and <strong>restores</strong> the saved set. Data stays
+          <strong>on your device</strong> by default.
         </p>
 
         <h2>Key features</h2>
         <ul>
-          <li>Manage multiple accounts (profiles) per site with clear naming and groups</li>
-          <li>On switch, clears in-scope cookies and applies the snapshot to prevent cross-account leakage</li>
-          <li>UI follows the browser language; English and Simplified Chinese i18n supported</li>
+          <li>
+            Manage multiple accounts (profiles) per site with clear naming and
+            groups
+          </li>
+          <li>
+            On switch, clears in-scope cookies and applies the snapshot to
+            prevent cross-account leakage
+          </li>
+          <li>
+            UI follows the browser language; English and Simplified Chinese
+            supported
+          </li>
         </ul>
 
         <div class="card">
           <p>
-            The <strong style="color: var(--text)">free</strong> tier limits how many accounts you can save (configure
-            <code>FREE_MAX_PROFILES</code> in source, default 5).
+            The <strong style="color: var(--text)">free</strong> tier limits how
+            many accounts you can save (5).
           </p>
           <p>
-            <strong style="color: var(--text)">Pro</strong> unlocks via a server-signed
-            <strong style="color: var(--text)">JWT license</strong> (the extension embeds only the
-            <strong>public key</strong>; the private key stays on the server—typical flow: Stripe on the website → webhook
-            issues JWT).
+            <strong style="color: var(--text)">Pro</strong>: ¥5 one-time
+            lifetime subscription — save unlimited accounts.
           </p>
         </div>
 
         <h2>Permissions &amp; privacy</h2>
         <ul>
           <li>
-            <strong>cookies</strong>, <strong>storage</strong>, <strong>tabs</strong>: read/write cookies, local storage,
-            and tab context
+            <strong>cookies</strong>, <strong>storage</strong>,
+            <strong>tabs</strong>: read/write cookies, local storage, and tab
+            context
           </li>
-          <li>Host permissions are requested as needed (per-site or broader), only for save/switch flows</li>
+          <li>
+            Host permissions are requested as needed (per-site or broader), only
+            for save/switch flows
+          </li>
         </ul>
-
-        <p class="footnote">
-          Build: <code>npm install</code> and <code>npm run build</code>, then load <code>dist/</code> from
-          <code>chrome://extensions</code>. Full docs, local JWT testing, and the privacy policy are in the repository (e.g.
-          <code>docs/PRIVACY.md</code>).
-        </p>
       </div>
     </main>
 
@@ -350,8 +391,8 @@
         var STORAGE_KEY = "account-switch-landing-lang";
 
         var META = {
-          zh: "Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版与 JWT 专业版。",
-          en: "Account Switch: Chromium extension for per-site Cookie snapshots, groups, and one-click switching; free tier and JWT Pro.",
+          zh: "Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版限 5 个账号，专业版 ¥5 终身可无限保存。",
+          en: "Account Switch: Chromium extension for per-site Cookie snapshots, groups, and switching; free tier: 5 accounts; Pro: ¥5 lifetime, unlimited.",
         };
 
         var TITLE = {
