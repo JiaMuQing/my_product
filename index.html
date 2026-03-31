@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cookie Switcher Pro</title>
+    <meta
+      id="meta-desc"
+      name="description"
+      content="Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版与 JWT 专业版。"
+    />
+    <title>Account Switch（Cookie 配置）</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,10 +18,12 @@
     <style>
       :root {
         --bg: #0f0e0d;
+        --surface: #1a1816;
         --text: #f4f0eb;
         --muted: #a39e96;
         --accent: #e8a54b;
         --accent-soft: rgba(232, 165, 75, 0.12);
+        --border: rgba(255, 255, 255, 0.08);
       }
 
       *,
@@ -33,22 +40,79 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "DM Sans", system-ui, sans-serif;
+        font-family:
+          "DM Sans",
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei",
+          "Noto Sans SC",
+          system-ui,
+          sans-serif;
         background: var(--bg);
         color: var(--text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1.25rem;
+        padding: 2.5rem 1.25rem 3rem;
         background-image:
           radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232, 165, 75, 0.15), transparent),
           radial-gradient(ellipse 60% 40% at 100% 100%, rgba(232, 165, 75, 0.06), transparent);
       }
 
       main {
-        max-width: 36rem;
-        width: 100%;
+        max-width: 40rem;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .lang-switch {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0;
+        margin-bottom: 1rem;
+      }
+
+      .lang-switch [data-set-lang] {
+        font-family: inherit;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        padding: 0.4rem 0.85rem;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition: color 0.15s, background 0.15s, border-color 0.15s;
+      }
+
+      .lang-switch [data-set-lang]:first-of-type {
+        border-radius: 0.5rem 0 0 0.5rem;
+        border-right: none;
+      }
+
+      .lang-switch [data-set-lang]:last-of-type {
+        border-radius: 0 0.5rem 0.5rem 0;
+      }
+
+      .lang-switch [data-set-lang]:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .lang-switch [data-set-lang].is-active {
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-color: rgba(232, 165, 75, 0.35);
+      }
+
+      .lang-switch [data-set-lang]:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .i18n-block[hidden] {
+        display: none !important;
+      }
+
+      .hero {
         text-align: center;
+        margin-bottom: 2rem;
       }
 
       .badge {
@@ -64,7 +128,7 @@
         border: 1px solid rgba(232, 165, 75, 0.25);
         padding: 0.35rem 0.75rem;
         border-radius: 999px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
       }
 
       .badge svg {
@@ -74,34 +138,281 @@
       }
 
       h1 {
-        margin: 0 0 1rem;
-        font-size: clamp(2rem, 5vw, 2.75rem);
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
         font-weight: 700;
-        line-height: 1.15;
+        line-height: 1.2;
         letter-spacing: -0.02em;
       }
 
-      .tagline {
+      .subtitle {
         margin: 0;
-        font-size: 1.125rem;
-        line-height: 1.6;
+        font-size: 1rem;
         color: var(--muted);
-        font-weight: 400;
+        font-weight: 500;
+      }
+
+      .lead {
+        margin: 1.75rem 0 0;
+        font-size: 1rem;
+        line-height: 1.75;
+        color: var(--text);
+        text-align: left;
+      }
+
+      .lead strong {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      h2 {
+        margin: 1.75rem 0 0.75rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.25rem;
+        color: var(--text);
+        line-height: 1.7;
+        font-size: 0.9375rem;
+      }
+
+      ul li + li {
+        margin-top: 0.35rem;
+      }
+
+      .card {
+        margin-top: 1.5rem;
+        padding: 1.25rem 1.35rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        text-align: left;
+      }
+
+      .card p {
+        margin: 0;
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+
+      .card p + p {
+        margin-top: 0.75rem;
+      }
+
+      .card code {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.84em;
+        color: var(--accent);
+        background: rgba(232, 165, 75, 0.1);
+        padding: 0.1em 0.35em;
+        border-radius: 0.25rem;
+      }
+
+      .footnote {
+        margin-top: 2rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.8125rem;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+
+      .footnote a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .footnote a:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
     <main>
-      <div class="badge" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
-          <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
-          <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
-        </svg>
-        Extension
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-set-lang="zh" aria-pressed="true">中文</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">English</button>
       </div>
-      <h1>Cookie Switcher Pro</h1>
-      <p class="tagline">One-click cookie manager for Chrome</p>
+
+      <div class="i18n-block" data-lang="zh">
+        <header class="hero">
+          <div class="badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
+              <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
+            </svg>
+            Chromium · Manifest V3
+          </div>
+          <h1>Account Switch</h1>
+          <p class="subtitle">Cookie 配置 · 多账号快照与一键切换</p>
+        </header>
+
+        <p class="lead">
+          基于 Chromium 的浏览器扩展：按站点<strong>保存 Cookie 快照</strong>，支持自定义<strong>名称</strong>与<strong>分组</strong>。切换账号时会清除当前 URL 作用域下的 Cookie，并<strong>恢复</strong>已保存的集合。数据默认<strong>仅保存在本机</strong>。
+        </p>
+
+        <h2>核心能力</h2>
+        <ul>
+          <li>按站点管理多个账号（profile），分组与命名清晰</li>
+          <li>切换时自动清理作用域内 Cookie 并写入快照，避免串号</li>
+          <li>界面语言跟随浏览器；支持英文与简体中文等 i18n</li>
+        </ul>
+
+        <div class="card">
+          <p>
+            <strong style="color: var(--text)">免费版</strong>限制可保存的账号数量（可在源码中配置
+            <code>FREE_MAX_PROFILES</code>，默认 5）。
+          </p>
+          <p>
+            <strong style="color: var(--text)">专业版</strong>通过服务端签发的 <strong style="color: var(--text)">JWT 许可证</strong>解锁（扩展内仅嵌入<strong>公钥</strong>校验；私钥留在服务器，常见流程：官网 Stripe 收款 → Webhook 签发 JWT）。
+          </p>
+        </div>
+
+        <h2>权限与隐私</h2>
+        <ul>
+          <li><strong>cookies</strong>、<strong>storage</strong>、<strong>tabs</strong>：读写 Cookie、本地存储与标签页上下文</li>
+          <li>按需申请站点或全网访问权限，仅在保存/切换时使用</li>
+        </ul>
+
+        <p class="footnote">
+          构建：<code>npm install</code> 与 <code>npm run build</code>，在 <code>chrome://extensions</code> 中加载
+          <code>dist/</code>。完整说明、本地 JWT 测试与隐私政策见仓库文档（如 <code>docs/PRIVACY.md</code>）。
+        </p>
+      </div>
+
+      <div class="i18n-block" data-lang="en" hidden>
+        <header class="hero">
+          <div class="badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
+              <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
+            </svg>
+            Chromium · Manifest V3
+          </div>
+          <h1>Account Switch</h1>
+          <p class="subtitle">Cookie profiles · Snapshots &amp; one-click switching</p>
+        </header>
+
+        <p class="lead">
+          A Chromium extension that <strong>saves Cookie snapshots</strong> per site, with custom <strong>names</strong> and
+          <strong>groups</strong>. When you switch accounts, it clears cookies for the current URL scope and
+          <strong>restores</strong> the saved set. Data stays <strong>on your device</strong> by default.
+        </p>
+
+        <h2>Key features</h2>
+        <ul>
+          <li>Manage multiple accounts (profiles) per site with clear naming and groups</li>
+          <li>On switch, clears in-scope cookies and applies the snapshot to prevent cross-account leakage</li>
+          <li>UI follows the browser language; English and Simplified Chinese i18n supported</li>
+        </ul>
+
+        <div class="card">
+          <p>
+            The <strong style="color: var(--text)">free</strong> tier limits how many accounts you can save (configure
+            <code>FREE_MAX_PROFILES</code> in source, default 5).
+          </p>
+          <p>
+            <strong style="color: var(--text)">Pro</strong> unlocks via a server-signed
+            <strong style="color: var(--text)">JWT license</strong> (the extension embeds only the
+            <strong>public key</strong>; the private key stays on the server—typical flow: Stripe on the website → webhook
+            issues JWT).
+          </p>
+        </div>
+
+        <h2>Permissions &amp; privacy</h2>
+        <ul>
+          <li>
+            <strong>cookies</strong>, <strong>storage</strong>, <strong>tabs</strong>: read/write cookies, local storage,
+            and tab context
+          </li>
+          <li>Host permissions are requested as needed (per-site or broader), only for save/switch flows</li>
+        </ul>
+
+        <p class="footnote">
+          Build: <code>npm install</code> and <code>npm run build</code>, then load <code>dist/</code> from
+          <code>chrome://extensions</code>. Full docs, local JWT testing, and the privacy policy are in the repository (e.g.
+          <code>docs/PRIVACY.md</code>).
+        </p>
+      </div>
     </main>
+
+    <script>
+      (function () {
+        var STORAGE_KEY = "account-switch-landing-lang";
+
+        var META = {
+          zh: "Account Switch：Chromium 扩展，按站点保存 Cookie 快照、分组与一键切换；免费版与 JWT 专业版。",
+          en: "Account Switch: Chromium extension for per-site Cookie snapshots, groups, and one-click switching; free tier and JWT Pro.",
+        };
+
+        var TITLE = {
+          zh: "Account Switch（Cookie 配置）",
+          en: "Account Switch (Cookie profiles)",
+        };
+
+        function detectDefault() {
+          var nav = (navigator.language || "").toLowerCase();
+          return nav.startsWith("zh") ? "zh" : "en";
+        }
+
+        function applyLang(lang) {
+          if (lang !== "zh" && lang !== "en") return;
+
+          document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+          document.title = TITLE[lang];
+
+          var meta = document.getElementById("meta-desc");
+          if (meta) meta.setAttribute("content", META[lang]);
+
+          document.querySelectorAll(".i18n-block").forEach(function (el) {
+            el.hidden = el.getAttribute("data-lang") !== lang;
+          });
+
+          document.querySelectorAll("[data-set-lang]").forEach(function (btn) {
+            var active = btn.getAttribute("data-set-lang") === lang;
+            btn.setAttribute("aria-pressed", String(active));
+            btn.classList.toggle("is-active", active);
+          });
+
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (_) {
+            /* ignore quota / private mode */
+          }
+        }
+
+        function init() {
+          var lang = detectDefault();
+          try {
+            var saved = localStorage.getItem(STORAGE_KEY);
+            if (saved === "zh" || saved === "en") lang = saved;
+          } catch (_) {
+            /* ignore */
+          }
+          applyLang(lang);
+
+          document.querySelectorAll("[data-set-lang]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              applyLang(btn.getAttribute("data-set-lang"));
+            });
+          });
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+      })();
+    </script>
   </body>
 </html>

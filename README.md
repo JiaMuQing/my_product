@@ -1,4 +1,6 @@
-# Cookie Switcher Pro — landing page
+# Account Switch — landing page
+
+浏览器扩展 **Account Switch（Cookie 配置）** 的简介页（`index.html`），可随本仓库一并发布到 GitHub Pages。
 
 静态站点，通过 GitHub Actions 发布到 **GitHub Pages**。
 
