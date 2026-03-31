@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cookie Switcher Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f0e0d;
+        --text: #f4f0eb;
+        --muted: #a39e96;
+        --accent: #e8a54b;
+        --accent-soft: rgba(232, 165, 75, 0.12);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-size: 100%;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.25rem;
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232, 165, 75, 0.15), transparent),
+          radial-gradient(ellipse 60% 40% at 100% 100%, rgba(232, 165, 75, 0.06), transparent);
+      }
+
+      main {
+        max-width: 36rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border: 1px solid rgba(232, 165, 75, 0.25);
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        margin-bottom: 1.5rem;
+      }
+
+      .badge svg {
+        width: 0.9rem;
+        height: 0.9rem;
+        opacity: 0.9;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      .tagline {
+        margin: 0;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--muted);
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z" />
+          <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none" />
+          <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none" />
+        </svg>
+        Extension
+      </div>
+      <h1>Cookie Switcher Pro</h1>
+      <p class="tagline">One-click cookie manager for Chrome</p>
+    </main>
+  </body>
+</html>
