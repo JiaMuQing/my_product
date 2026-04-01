@@ -1,1 +1,5 @@
 my_product.code-workspace
+
+# 本地基础设施清单（含服务器与域名，勿提交）
+docs/infrastructure.md
+.cursor/*
