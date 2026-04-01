@@ -43,7 +43,8 @@
 ```
 
 - 站点根目录默认 **`/var/web/my_product`**（与 `deploy-my-product.sh` 从 `docs/infrastructure.md` 解析的路径一致；若写 `var/web/my_product` 会自动变成绝对路径）。
-- 配置文件模板：`scripts/nginx-product.xyptkd.cn.conf`（远端安装为 `/etc/nginx/conf.d/product.xyptkd.cn.conf`）。
+- 配置文件模板：`scripts/nginx-product.xyptkd.cn.conf`（HTTP + ACME 目录；远端为 `/etc/nginx/conf.d/product.xyptkd.cn.conf`）。
+- 启用 HTTPS 后的完整配置：`scripts/nginx-product.xyptkd.cn.full.conf`（由下方 SSL 脚本部署）。
 
 在服务器上自检（应返回 `HTTP/1.1 200`）：
 
@@ -51,20 +52,33 @@
 curl -sI http://127.0.0.1/ -H 'Host: product.xyptkd.cn'
 ```
 
-**HTTPS（Let’s Encrypt）**：在公网 DNS 已指向本机且 **80 可从公网访问** 后，可在服务器上执行（与 Cloudflare 代理并存时需额外考虑验证方式；常用做法是 DNS 验证或临时灰云）：
+### HTTPS（Let’s Encrypt + 定时续期）
+
+前提：`product.xyptkd.cn` 已解析到本机，且 **入站 TCP 80** 对公网或 Let’s Encrypt 校验路径可达（使用 **Cloudflare 橙云** 时，HTTP-01 一般会经 CDN 回源到源站 80，需保证回源与 `/.well-known/acme-challenge/` 未被拦截）。
+
+在本机执行（SSH 登录服务器、安装 `certbot`、申请证书、切换为 **HTTPS Nginx 配置**、写入 **cron 每天 3:00 / 15:00 尝试续期**，续期成功则 `reload nginx`）：
 
 ```bash
-certbot --nginx -d product.xyptkd.cn --non-interactive --agree-tos --register-unsafely-without-email --redirect
+./scripts/remote-ssl-certbot-my-product.sh
 ```
+
+- 续期任务文件：`/etc/cron.d/letsencrypt-renew-nginx`（`certbot renew --deploy-hook "systemctl reload nginx"`）。
+- 证书路径：`/etc/letsencrypt/live/product.xyptkd.cn/`。
+
+源站已有 **443 + 有效证书** 后，Cloudflare 加密模式可改为 **Full (strict)**（此前仅 80 时易 522）。
+
+**若脚本报错且含 `522` / `unauthorized`（HTTP-01）**：Let’s Encrypt 会访问 `http://product.xyptkd.cn/.well-known/...`，经 Cloudflare 回源；若源站 80 仍 522，校验失败。处理顺序建议：
+
+1. 阿里云安全组放行 **TCP 80**（对 `0.0.0.0/0` 或 Cloudflare IP 段）。  
+2. Cloudflare 把 **`product` 的 A 记录改为「仅 DNS」（灰云）**，再执行 `./scripts/remote-ssl-certbot-my-product.sh`；证书签发成功后，再开回 **橙云**，并把 SSL 模式设为 **Full (strict)**。  
+3. 若必须长期橙云且 80 回源仍异常，可改用 **DNS-01**（在 DNS 面板手动添加 `_acme-challenge` TXT，或使用 `certbot-dns-cloudflare` 等插件 + API Token），不在此脚本内自动化。
 
 ### 要让 `https://product.xyptkd.cn` 在浏览器里能打开
 
 1. **DNS**：权威解析在 **Cloudflare** 时，在 Cloudflare 面板维护记录；`product`（或泛解析 `*`）**A 记录** 指向 `docs/infrastructure.md` 中的 **ECS 公网 IP**。若在阿里云 DNS 控制台改记录但 NS 仍指向 Cloudflare，**改阿里云不会生效**。
 2. **阿里云安全组**：入方向放行 **TCP 80**、**TCP 443**，源至少包含 **Cloudflare IP 段**（简化可先 `0.0.0.0/0` 验证后再收紧）。
-3. **Cloudflare SSL/TLS 与 522**：源站若**只有 HTTP 80**、未配置可用 **HTTPS 443**，而 Cloudflare 加密模式为 **Full / Full (strict)**，边缘回源会连 **443**，容易 **522 / 握手失败**。可选：
-   - 临时改为 **Flexible**（仅访客与 Cloudflare 之间 HTTPS，回源 HTTP）；或  
-   - 在源站 Nginx 配置 **443**（例如使用 [Cloudflare Origin Certificate](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/)），加密模式用 **Full (strict)**。
-4. 验证：本机执行 `curl -sI http://<ECS公网IP>/ -H 'Host: product.xyptkd.cn'` 应出现 `HTTP/1.1 200`；再通过 `curl -sI https://product.xyptkd.cn` 验证经 Cloudflare 是否 200。
+3. **Cloudflare SSL/TLS**：源站仅 80 时用 **Flexible**；源站已按上文脚本启用 **443 + Let’s Encrypt** 后，可改为 **Full (strict)**。
+4. 验证：`curl -sI https://product.xyptkd.cn` 应出现 `HTTP/2 200` 或 `HTTP/1.1 200`。
 
 ## 说明
 

@@ -62,6 +62,7 @@ scp_put "$NGINX_CONF_SRC" "${SSH_USER}@${SSH_HOST}:/tmp/product.xyptkd.cn.conf"
 run_ssh "WEB_ROOT=${REMOTE_PATH}" bash -s <<'REMOTE'
 set -euo pipefail
 mkdir -p "$WEB_ROOT"
+mkdir -p /var/www/certbot
 
 if command -v apt-get >/dev/null 2>&1; then
   export DEBIAN_FRONTEND=noninteractive
